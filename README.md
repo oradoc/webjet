@@ -194,3 +194,46 @@ See `eg7`.
 ## JET Basics
 
 Now that the basics of RequireJS and Knockout have been covered, how then do we get going with an Oracle JET application?
+
+There are a few ways to get the necessary files. Method one is to follow the [getting started guide](http://www.oracle.com/webfolder/technetwork/jet/globalGetStarted.html). The first part involves installing some tools with `npm`. I found I had to first install `yeoman-doctor` for it to work.
+
+```bash
+npm install -g yeoman-doctor
+npm -g install yo bower grunt-cli
+npm -g install generator-oraclejet
+```
+
+Once that is done, you can generate the program files into a designated folder with the command:
+
+```bash
+yo oraclejet <project name> --template=basic
+```
+
+The program can then be served with
+
+```bash
+grunt build && grunt serve
+```
+
+You can omit the `--template=basic` bit to create an empty projec, with all the necessary JET requirements.
+..
+Netbeans.
+
+If you use NetBeans, there is an Oracle JET plugin you can install that you can use point and click to create new JET projects - similarly, empty or with the quick start template.
+
+When creating a new project, click the HTML5/JavaScript category, then locate Oracle JET Base Distribution.
+
+![image](https://cloud.githubusercontent.com/assets/1747643/18231189/fceca7d8-72f4-11e6-9278-3877311d0c47.png)
+
+Or if you want the quick start template, navigate to Samples, and select `Oracle JET QuickStart Basic`.
+
+![image](https://cloud.githubusercontent.com/assets/1747643/18231197/426ae310-72f5-11e6-86b1-864ea0bc8af9.png)
+
+..
+The third approach is to download the [ZIP files](http://www.oracle.com/technetwork/developer-tools/jet/downloads/index.html). If using NetBeans, you can set up a project based on these archives by opting to create a `HTML5/JS Application`
+
+![image](https://cloud.githubusercontent.com/assets/1747643/18231219/07fabc72-72f6-11e6-815d-28d00646fdfc.png)
+
+When it comes time to specify the template, just point it at the downloaded zip file.
+
+![image](https://cloud.githubusercontent.com/assets/1747643/18231222/33981974-72f6-11e6-95cf-e3bcd4a3dcfb.png)
