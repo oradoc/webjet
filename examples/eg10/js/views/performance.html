@@ -1,0 +1,34 @@
+<!--
+ Copyright (c) 2014, 2016, Oracle and/or its affiliates.
+ The Universal Permissive License (UPL), Version 1.0
+ -->
+<h1>Performance Content2</h1>
+<table id="table" summary="Department List" aria-label="Departments Table"
+data-bind="ojComponent: {component: 'ojTable',
+                    data: datasource,
+                    selection: selectedData,
+                    selectionMode: {row: 'single', column: null},
+                    columnsDefault: {
+                        sortable: 'none'
+                    },
+                    columns: [
+                        {
+                            headerText: 'Department Id',
+                            field: 'DepartmentId'
+                        },
+                        {
+                            headerText: 'Department Name',
+                            field: 'DepartmentName'
+                        },
+                        {
+                            headerText: 'Location Id',
+                            field: 'LocationId'
+                        },
+                        {
+                            headerText: 'Manager Id',
+                            field: 'ManagerId'
+                        }
+                    ]
+            }">
+</table>
+<p>You selected department id: <span data-bind="text: selectionInfo"></span></p>

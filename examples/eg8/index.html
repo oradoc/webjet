@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<!--
+ Copyright (c) 2014, 2016, Oracle and/or its affiliates.
+ The Universal Permissive License (UPL), Version 1.0
+ -->
+
+<!-- ************************ IMPORTANT INFORMATION ************************************
+     This file and Quick Start project are provided as an example of how to configure a JET application.
+     It contains the Oracle JET framework and a default requireJS configuration file to show how JET can be setup
+     in a common application. This project template can be used in conjunction with demo code from the JET website
+     to test JET component behavior and interactions.
+
+     Any CSS styling with the prefix "demo-" is for demonstration only and is not provided as part of the JET framework.
+
+     Aria Landmark role attributes are added to the different sections of the application for accessibility compliance.
+     If you change the type of content for a specific section from what is defined, you should also change the
+     role value for that section to represent the appropriate content type.
+     ***************************** IMPORTANT INFORMATION ************************************ -->
+
+<html lang="en-us">
+  <head>
+    <title>Oracle JET Quick Start - Basic</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="css/images/favicon.ico" type="image/x-icon" />
+
+    <!-- This is the main css file for the default Alta theme -->
+    <!-- injector:theme -->
+    <link rel="stylesheet" href="css/libs/oj/v2.1.0/alta/oj-alta-min.css" type="text/css"/>
+    <!-- endinjector -->
+
+    <!-- This is where you would add any app specific styling -->
+    <link rel="stylesheet" href="css/override.css" type="text/css"/>
+
+    <!-- RequireJS configuration file -->
+    <script data-main="js/main" src="js/libs/require/require.js"></script>
+  </head>
+  <body>
+    <!-- Template for rendering navigation items shared between nav bar and nav list -->
+    <script type="text/html" id="navTemplate">
+      <li><a href="#">
+        <span data-bind="css: $data['iconClass']"></span>
+        <!-- ko text: $data['name'] --> <!--/ko-->
+      </a></li>
+    </script>
+
+    <div id="globalBody" class="oj-offcanvas-outer-wrapper oj-offcanvas-page">
+      <!--
+      ** This off-canvas section is used when the browser is resized to a
+      ** medium or smaller media query size. It moves the App Navigation into a drawer
+      -->
+      <!-- off-canvas content -->
+      <div id="offcanvas" class="oj-contrast-marker oj-web-applayout-offcanvas oj-offcanvas-start">
+        <!-- This data is hidden in off-canvas content
+          until the user clicks on the hamburger icon.
+        -->
+        <div role="navigation" data-bind="ojComponent: {component: 'ojNavigationList',
+          optionChange: navChange, navigationLevel: 'application',
+          item: {template: 'navTemplate'}, data: navDataSource,
+          selection: router.stateId, edge: 'start'}">
+        </div>
+      </div>
+      <div id="pageContent" class="oj-web-applayout-page">
+        <!--
+           ** The header pattern uses oj-flex-bar style classes to layout header content.
+           ** Contains three main areas: global branding, global navigation, and application navigation.
+           ** Please see the Oracle JET website under the Cookbook/Application Patterns section for details on how to use this pattern
+        -->
+        <header role="banner" class="oj-web-applayout-header">
+          <div class="oj-web-applayout-max-width oj-flex-bar oj-sm-align-items-center">
+            <!-- Offcanvas toggle button -->
+            <div class="oj-flex-bar-start oj-md-hide">
+              <button class="oj-button-lg" data-bind="click: toggleDrawer,
+                ojComponent: {component:'ojButton', label: 'Application Navigation',
+                chroming: 'half', display: 'icons', icons: {start: 'oj-web-applayout-offcanvas-icon'}}">
+              </button>
+            </div>
+            <div data-bind="css: smScreen() ? 'oj-flex-bar-center-absolute' : 'oj-flex-bar-middle oj-sm-align-items-baseline'">
+              <span role="img" class="oj-sm-only-hide oj-icon demo-oracle-icon" title="Oracle Logo" alt="Oracle Logo"></span>
+              <h1 class="oj-web-applayout-header-title" title="Application Name" data-bind="text: appName"></h1>
+            </div>
+            <div class="oj-flex-bar-end">
+              <!-- Responsive Toolbar -->
+              <div data-bind="ojComponent: {component:'ojToolbar'}">
+                <button data-bind="ojComponent: {component:'ojButton',
+                  label: 'Search', display: 'icons', chroming: 'half',
+                  icons: {start:'oj-fwk-icon-magnifier oj-fwk-icon'}}">
+                </button>
+                <span class="oj-toolbar-separator" role="separator" aria-orientation="vertical"></span>
+                <button id="userMenu"
+                  data-bind="ojComponent: {component: 'ojButton', label: userLogin,
+                  display: smScreen() ? 'icons' : 'all',
+                  icons: smScreen() ? {start: 'oj-icon demo-avatar-icon', end: null} : {end: 'oj-component-icon oj-button-menu-dropdown-icon'},
+                  chroming: 'half', menu: '#menu1'}">
+                </button>
+                <ul id='menu1' data-bind="ojComponent: {component: 'ojMenu', select: menuItemSelect}" style="display:none">
+                  <li id="pref"><a href="#">Preferences</a></li>
+                  <li id="help"><a href="#">Help</a></li>
+                  <li id="about"><a href="#">About</a></li>
+                  <li id="out"><a href="#">Sign Out</a></li>
+                </ul>
+                <div style="display:none" id="aboutDialog" title="About JET QuickStart Basic"
+                  data-bind="ojComponent:{component: 'ojDialog',
+                  rootAttributes: { style: 'max-width:620px;width:100%;'}}">
+                  <div class="oj-dialog-body">
+                    The Oracle JET QuickStart Basic template is meant as an example of how to setup a
+                    very basic Single-Page-Application(SPA) with the JET libraries configured correctly.<br/><br/>
+                    It contains examples for working with the ojModule libraries for basic template and paging support.
+                    It incorporates responsive design patterns to work at all Oracle JET
+                    Media Query sizes for Desktop, Tablet(portrait and landscape), and phone.<br/><br/>
+                    Please refer to in code comments for details.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div role="navigation" data-bind="ojComponent: {component: 'ojNavigationList',
+            navigationLevel: 'application',
+            item: {template: 'navTemplate'}, data: navDataSource,
+            selection: router.stateId, edge: 'top'}"
+            class="oj-web-applayout-navbar oj-sm-only-hide oj-web-applayout-max-width oj-navigationlist-item-dividers oj-md-condense oj-md-justify-content-center oj-lg-justify-content-flex-end">
+          </div>
+        </header>
+        <!-- This is where your main page content will be loaded -->
+        <div class="oj-web-applayout-max-width oj-web-applayout-content">
+          <div class="oj-flex">
+            <div class="oj-xl-3 oj-lg-3 oj-sm-12 oj-flex-item oj-flex">
+              <div id="navigationContent" role="navigation" class="oj-panel oj-margin oj-flex-item"
+                data-bind="ojModule: {viewName: 'navContent'}">
+                <!--  This section is usually used for Navigation.
+                  ** If its purpose is changed, the "role" attribute should be changed as well
+                  ** to meet accessibility guidelines.  Using the ojModule binding to load the specific HTML template
+                  ** that will be shown on the page. Using the "viewName" option just loads the HTML template
+                  ** while binding it to the existing viewmodel.
+                -->
+              </div>
+            </div>
+            <div class="oj-xl-6 oj-lg-9 oj-sm-12 oj-flex-item oj-flex">
+              <div id="mainContent" role="main" class="oj-panel oj-margin oj-flex-item"
+                data-bind="ojModule: router.moduleConfig">
+                <!-- Unlike the Navigation and Complementary sections,
+                  ** this ojModule binding is using "name" instead of "viewName".
+                  ** When the "name" option is specified, ojModule expects that
+                  ** the View and the ViewModel share the same base name.
+                  ** The "viewName" option is used when the View does not have
+                  ** an associated ViewModel or when the ViewModel has a different base name.
+                -->
+              </div>
+            </div>
+            <!-- You will notice that each section in the page has a set of column widths defined by CSS classes.
+              ** These tell the div to take up so much space when it is in a specific media query range.
+              ** This is part of the responsive grid layout framework provided by JET. As this one is set,
+              ** the div will take up all 12 columns at a small and up media query size. When it hits extra large,
+              ** it will only take up 3 columns.
+            -->
+            <div class="oj-xl-3 oj-sm-12 oj-flex-item oj-flex">
+              <div id="complementaryContent" role="complementary" class="oj-panel oj-margin oj-flex-item"
+              data-bind="ojModule: {viewName: 'compContent'}">
+              </div>
+            </div>
+          </div>
+        </div>
+        <footer class="oj-web-applayout-footer" role="contentinfo">
+          <div class="oj-web-applayout-max-width">
+            <ul>
+              <!-- ko foreach: footerLinks -->
+              <li><a data-bind="text : name, attr : {id: linkId, href : linkTarget}"></a></li>
+              <!-- /ko -->
+            </ul>
+          </div>
+          <div class="oj-text-secondary-color oj-text-sm oj-web-applayout-max-width">
+            Copyright © 2014, 2016 Oracle and/or its affiliates All rights reserved.
+          </div>
+        </footer>
+      </div>
+    </div>
+  </body>
+</html>

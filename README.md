@@ -163,7 +163,7 @@ text: 'js/libs/text/text'
 Followed by adding `text` into the require Array.
 
 ```js
-require(["knockout", "app", "text"], function(ko, app, text){
+require(["knockout", "app", "text"], function(ko, app, text){/*code omitted*/})
 ```
 
 Then, create 2 new folders within the `js` folder - `views` and `viewsmodel`. Move the `app.js` from our previous example into viewsmodel, renaming it to `firstname.js` - to give it a more meaningful module name. And create a firstname.html file in the views folder, with the text as from the template property of the component.
@@ -180,7 +180,7 @@ firstname: 'js/viewsmodel/firstname'
 and the call to `require`.
 
 ```js
-require(["knockout", "firstname", "text"], function(ko, firstname, text){
+require(["knockout", "firstname", "text"], function(ko, firstname, text){/*code omitted*/})
 ```
 
 Finally, in our viewsmodel, update the template to point to our html file.
@@ -237,3 +237,170 @@ The third approach is to download the [ZIP files](http://www.oracle.com/technetw
 When it comes time to specify the template, just point it at the downloaded zip file.
 
 ![image](https://cloud.githubusercontent.com/assets/1747643/18231222/33981974-72f6-11e6-95cf-e3bcd4a3dcfb.png)
+
+### Jet modules
+
+In the previous chapter, we took a look at how to use a modular system with Knockout. So, now we can turn our attention to JET modules. The best way to get started is to grab the quick start template. If you look at the folder structure, you will see a familiar structure with `viewmodels` and `views`. Most of the viewmodels are just empty at this stage, but if you look at `home` - which is the default page - it contains a field (something) - which can be bound in the template.
+
+Ignoring the workings of the Router for now, to remove (or add) an element, in the appController the router is configured with all the navigation elements your application uses. So, say for instance you wanted to remove the `Graphics` module - first remove the call to `'graphics': {label: 'Graphics'}`
+
+Removing this line will remove the functionality to display that module in the application - the navigation entry will still exist. This application has a navigation module, so navigate to `js/navigation.js` and delete the relevant row in the data array.
+
+See `eg8`
+
+This quickstart template provides a good foundation for quickly prototyping JET components. So in our template, we will use the `performance` module to protype a chart. Remove the existing html content (except the header).
+
+Now, we can go to the Oracle JET site and head to the cookbook to see all the components available. In this example, we want to demonstrate the use of a [bar chart](http://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=barChart&demo=default). There will of course be tweaks to what you see in the cookbook, so you will want to glance over to make sure you only grab the necessary bits - it's not a bad idea to play around in the live editor. With the code simplified, we add the html:
+
+
+```html
+<div id='chart-container'>
+    <div id="barChart" data-bind="ojComponent: {
+            component: 'ojChart',
+            type: 'bar',
+            orientation: 'vertical',
+            stack: 'off',
+            series: barSeriesValue,
+            groups: barGroupsValue,
+            animationOnDisplay: 'auto',
+            animationOnDataChange: 'auto',
+            hoverBehavior: 'dim'
+        }"
+         style="max-width:500px;width:100%;height:350px;">
+    </div>
+</div>
+```
+
+With a corresponding model.
+
+```
+/**
+ * Copyright (c) 2014, 2016, Oracle and/or its affiliates.
+ * The Universal Permissive License (UPL), Version 1.0
+ */
+/*
+ * Your viewModel code goes here
+ */
+ define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojchart'],
+ function(oj, ko, $)
+ {
+     function ChartModel() {
+         var self = this;
+
+         /* chart data */
+         var barSeries = [{name: "Series 1", items: [42, 34]},
+                          {name: "Series 2", items: [55, 30]},
+                          {name: "Series 3", items: [36, 50]},
+                          {name: "Series 4", items: [22, 46]},
+                          {name: "Series 5", items: [22, 46]}];
+
+         var barGroups = ["Group A", "Group B"];
+
+         self.barSeriesValue = ko.observableArray(barSeries);
+         self.barGroupsValue = ko.observableArray(barGroups);
+     }
+
+     return ChartModel;
+ });
+```
+
+Notice this has been altered slightly - the `require` was changed to `define`, as we learnt in a previous chapter. And we return the model, rather than applying the bindings as per the example.
+
+See `eg9`.
+
+## Tables
+
+On the cookbook, if you navigate to `Collections` there is a section for Tables. Your applications will most likely want to use this at some point to present data to the user. So, copy the example from the cookbook of the Basic example - tweaking where necessary. This will give us the HTML:
+
+```html
+<table id="table" summary="Department List" aria-label="Departments Table"
+data-bind="ojComponent: {component: 'ojTable',
+                    data: datasource,
+                    columnsDefault: {
+                        sortable: 'none'
+                    },
+                    columns: [
+                        {
+                            headerText: 'Department Id',
+                            field: 'DepartmentId'
+                        },
+                        {
+                            headerText: 'Department Name',
+                            field: 'DepartmentName'
+                        },
+                        {
+                            headerText: 'Location Id',
+                            field: 'LocationId'
+                        },
+                        {
+                            headerText: 'Manager Id',
+                            field: 'ManagerId'
+                        }
+                    ]
+            }">
+</table>
+```
+
+And associated view model.
+
+```
+define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'promise', 'ojs/ojtable', 'ojs/ojarraytabledatasource'],
+function(oj, ko, $)
+{
+  function viewModel()
+  {
+    var self = this;
+
+    var deptArray = [
+        {DepartmentId: 1001, DepartmentName: 'ADFPM 1001 neverending', LocationId: 200, ManagerId: 300},
+        {DepartmentId: 556, DepartmentName: 'BB', LocationId: 200, ManagerId: 300},
+        {DepartmentId: 10, DepartmentName: 'Administration', LocationId: 200, ManagerId: 300},
+        {DepartmentId: 20, DepartmentName: 'Marketing', LocationId: 200, ManagerId: 300},
+        {DepartmentId: 30, DepartmentName: 'Purchasing', LocationId: 200, ManagerId: 300},
+        {DepartmentId: 40, DepartmentName: 'Human Resources1', LocationId: 200, ManagerId: 300},
+        {DepartmentId: 50, DepartmentName: 'Administration2', LocationId: 200, ManagerId: 300},
+        {DepartmentId: 60, DepartmentName: 'Marketing3', LocationId: 200, ManagerId: 300},
+        {DepartmentId: 70, DepartmentName: 'Purchasing4', LocationId: 200, ManagerId: 300},
+        {DepartmentId: 80, DepartmentName: 'Human Resources5', LocationId: 200, ManagerId: 300},
+        {DepartmentId: 90, DepartmentName: 'Human Resources11', LocationId: 200, ManagerId: 300},
+        {DepartmentId: 100, DepartmentName: 'Administration12', LocationId: 200, ManagerId: 300},
+        {DepartmentId: 110, DepartmentName: 'Marketing13', LocationId: 200, ManagerId: 300},
+        {DepartmentId: 120, DepartmentName: 'Purchasing14', LocationId: 200, ManagerId: 300},
+        {DepartmentId: 130, DepartmentName: 'Human Resources15', LocationId: 200, ManagerId: 300}];
+
+    self.datasource = new oj.ArrayTableDataSource(deptArray, {idAttribute: 'DepartmentId'});
+  }
+
+  return viewModel;
+});
+```
+
+As you see in the html, we've defined the data to point to a `datasource` property in our view model. If we look at the [API docs](http://www.oracle.com/webfolder/technetwork/jet/jsdocs/oj.ojTable.html#data) for that field, we see it expects an `oj.TableDataSource` object. That is why the example is creating an ArrayTableDataSource (which extends from TableDataSource). To understand how to use the table API, we can start by monitoring when a row is clicked (selected). ojTable has a [selection](http://www.oracle.com/webfolder/technetwork/jet/jsdocs/oj.ojTable.html#selection) and [selectionMode](http://www.oracle.com/webfolder/technetwork/jet/jsdocs/oj.ojTable.html#selectionMode) property. Both need to be set in order to be able to monitor and act on selections. In the component for the ojTable, we add the following.
+
+```
+selection: selectedData,
+selectionMode: {row: 'single', column: null},
+```
+
+selectedData is a new property that we need to add to our viewmodel. Set that up as a `ko.observable` property. If you look at the API, you will see that this returns an Array of Objects containing the startIndex and endIndex of the selection. Since we are only dealing with single rows, this will always refer to the same row, and be an Array of size 1. With that in mind, we can produce the following in our viewmodel.
+
+```js
+self.selectedData = ko.observable();
+
+self.selectionInfo = ko.pureComputed(function(){
+    if (self.selectedData()){
+        var rowIndex = self.selectedData()[0].startIndex.row;
+        return deptArray[rowIndex].DepartmentId;
+    }
+
+    return 'No data selected';
+});
+```
+
+The selectionInfo is the property will use to display the user some feedback about what they clicked on. With this in place, we can add to our html file the following, which will output the department ID of the selected row:
+
+```html
+<p>You selected department id: <span data-bind="text: selectionInfo"></span></p>
+```
+
+See `eg10`.

@@ -1,0 +1,87 @@
+{
+  "libSrc":"bower_components",
+  "libDest":"libs", 
+  "libs":
+  {
+	  "knockout": 
+	  {
+		"bower":"true",
+		"devPath":"knockout/knockout-3.4.0.debug",
+		"releasePath":"knockout/knockout-3.4.0"
+	  },
+	  "jquery": 
+	  {
+		"bower":"true",
+		"devPath":"jquery/jquery", 
+		"releasePath": "jquery/jquery.min"
+	  },    
+	  "jqueryui-amd": 
+	  {
+		"bower":"true",
+		"devFiles":
+		[
+		  "jquery-ui/ui/core",
+		  "jquery-ui/ui/draggable",
+		  "jquery-ui/ui/mouse",
+		  "jquery-ui/ui/position",
+		  "jquery-ui/ui/sortable",
+		  "jquery-ui/ui/widget"
+		], 
+		"releaseFiles":
+		[
+		 {"src":"jquery-ui/ui/minified/core.min", "newName":"core"},
+		 {"src":"jquery-ui/ui/minified/draggable.min", "newName":"draggable"},
+		 {"src":"jquery-ui/ui/minified/mouse.min", "newName":"mouse"},
+		 {"src":"jquery-ui/ui/minified/position.min", "newName":"position"},
+		 {"src":"jquery-ui/ui/minified/sortable.min", "newName":"sortable"},
+		 {"src":"jquery-ui/ui/minified/widget.min", "newName":"widget"}
+		], 
+		"devPath":"jquery/jqueryui-amd-1.12.0",
+		"releasePath":"jquery/jqueryui-amd-1.12.0.min"
+	  },
+	  "promise": 
+	  {
+		"bower":"true",
+		"devPath":"es6-promise/es6-promise",
+		"releasePath":"es6-promise/es6-promise.min"
+	  },
+	  "hammerjs": 
+	  {
+		"bower":"true",
+		"devPath":"hammer/hammer-2.0.8",
+		"releasePath":"hammer/hammer-2.0.8.min"
+	  },
+	  "ojdnd":
+	  {
+		"devPath":"dnd-polyfill/dnd-polyfill-1.0.0",
+		"releasePath":"dnd-polyfill/dnd-polyfill-1.0.0.min"
+	  },
+	  "ojs": 
+	  {
+		"devPath":"oj/v2.1.0/debug",
+		"releasePath":"oj/v2.1.0/min"
+	  },
+	  "ojL10n":
+	  {
+		"devPath":"oj/v2.1.0/ojL10n",
+		"releasePath":"oj/v2.1.0/ojL10n"
+	  }, 
+	  "ojtranslations": 
+	  {
+		"devPath":"oj/v2.1.0/resources",
+		"releasePath":"oj/v2.1.0/resources"
+	  },
+	  "text": 
+	  {
+		"bower":"true",
+		"devPath":"require/text",
+		"releasePath":"require/text"
+	  },
+	  "signals": 
+	  {
+		"bower":"true",
+		"devPath":"js-signals/signals",
+		"releasePath":"js-signals/signals.min"
+	  }
+  }  
+}
